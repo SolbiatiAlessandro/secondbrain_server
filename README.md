@@ -1,6 +1,6 @@
 # SecondBrain (v2) Server
 
-Read the APIs docs at <https://solbiatialessandro.github.io/secondbrain_server/>
+
 
 Repurposed old [v1 repo](https://github.com/SolbiatiAlessandro/LoveCRM_v1typescript) to be server for new v2
 
@@ -13,6 +13,11 @@ npx apidoc -i src -o apidoc
 ```
 
 Consume
+
+Read the APIs docs at <https://solbiatialessandro.github.io/secondbrain_server/>
+
+or 
+
 ```
 open -a "Google Chrome" apidoc/index.html
 ```
