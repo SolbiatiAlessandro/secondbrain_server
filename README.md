@@ -2,6 +2,8 @@
 
 Repurposed old [v1 repo](https://github.com/SolbiatiAlessandro/LoveCRM_v1typescript) to be server for new v2
 
+There is also a dummy v1 client in this repo but is deprecated as of v2
+
 ## Docs
 Generate 
 ```
