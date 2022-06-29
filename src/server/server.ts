@@ -37,6 +37,7 @@ function getGraphFromRequest( req ): Graph {
 
 
 import express from "express";
+import Request from "express";
 import cors from "cors";
 const app = express();
 app.use(cors());
@@ -65,7 +66,7 @@ app.get(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, ( req, res ) => {
 // TODO: with internet, how to do typed requests?
 // title: string 
 // parent: string (uuid of parent note)
-app.get(constants.ENDPOINTS.CREATE_CURATED_NOTE, ( req, res ) => {
+app.get(constants.ENDPOINTS.CREATE_CURATED_NOTE, ( req: Request<{title: string, parent: string }>, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.CREATE_CURATED_NOTE, req.query);
 	const note = NoteBuilder.createCuratedNote(graph, req.query.title, req.query.parent);
