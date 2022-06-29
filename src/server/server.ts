@@ -68,6 +68,17 @@ app.get(constants.ENDPOINTS.LOAD_GRAPH, ( req, res ) => {
 	res.send({ graph: GraphBuilder.loadGraphData(graph.graph_path)});
 });
 
+/**
+* @api {get} /create-uncurated-note/ Create Uncurated Note
+* @apiName CreateUncuratedNote
+* @apiGroup Note
+*
+* @apiSuccess {String} url of uncurated note
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     "./data/public/testgraph/markdown/e86860c0-f7a2-11ec-834a-930074e48e7c.md"
+*/
 app.get(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, req.query);
@@ -76,9 +87,19 @@ app.get(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, ( req, res ) => {
 	res.send(note);
 });
 
-// TODO: with internet, how to do typed requests?
-// title: string 
-// parent: string (uuid of parent note)
+/**
+* @api {get} /create-curated-note/ Create Curated Note
+* @apiName CreateCuratedNote
+* @apiGroup Note
+* @apiParam {String} title name of the new note
+* @apiParam {String} parent uuid of the parent note
+*
+* @apiSuccess {String} url of curated note
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     "./data/public/testgraph/markdown/e86860c0-f7a2-11ec-834a-930074e48e7c.md"
+*/
 app.get(constants.ENDPOINTS.CREATE_CURATED_NOTE, ( req: Request<{title: string, parent: string }>, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.CREATE_CURATED_NOTE, req.query);
@@ -87,7 +108,18 @@ app.get(constants.ENDPOINTS.CREATE_CURATED_NOTE, ( req: Request<{title: string, 
 	res.send(note);
 });
 
-// personName: string 
+/**
+* @api {get} /create-person/ Create Person
+* @apiName CreatePerson
+* @apiGroup Person
+* @apiParam {String} personName name of the person
+*
+* @apiSuccess {String} url of person note
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     "./data/public/testgraph/markdown/e86860c0-f7a2-11ec-834a-930074e48e7c.md"
+*/
 app.get(constants.ENDPOINTS.CREATE_PERSON, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.CREATE_PERSON, req.query);
@@ -96,8 +128,17 @@ app.get(constants.ENDPOINTS.CREATE_PERSON, ( req, res ) => {
 	res.send(note);
 });
 
-// uncuratedNoteUUID: uuid
-// curatedNoteUUID: uuid
+/**
+* @api {get} /reference-curated-note/ Reference Curated Note
+* @apiName ReferenceCuratedNote
+* @apiGroup Note
+* @apiParam {String} uncuratedNoteUUID
+* @apiParam {String} curatedNoteUUID
+* @apiDescription uncurated note mentions a curated note, this is used to create a link between notes for querying like content or time tracking
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*/
 app.get(constants.ENDPOINTS.REFERENCE_CURATED_NOTE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.REFERENCE_CURATED_NOTE, req.query);
@@ -110,7 +151,16 @@ app.get(constants.ENDPOINTS.REFERENCE_CURATED_NOTE, ( req, res ) => {
 	res.sendStatus(200);
 });
 
-// noteUUID: uuid
+/**
+* @api {get} /edit-note/ Edit Note
+* @apiName Edit Note
+* @apiGroup Note
+* @apiParam {String} noteUUID
+* @apiDescription send a signal that the note is being edited mostly for time tracking
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*/
 app.get(constants.ENDPOINTS.EDIT_NOTE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.EDIT_NOTE, req.query);

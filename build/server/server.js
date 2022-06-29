@@ -50,7 +50,7 @@ app.get("/", function (req, res) {
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
 *     {
-*       "graph": "John",
+*       "graph": "{"graph":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<gexf version=\"1.2\" xmlns=\"http://www.gexf.net/1.2draft\" xmlns:viz=\"http:///www.gexf.net/1.1draft/viz\">\n  <meta/>\n  <graph defaultedgetype=\"directed\">\n    <attributes class=\"node\">\n      <attribute id=\"mdfile\" title=\"mdfile\" type=\"string\"/>\n      <attribute id=\"title\" title=\"title\" type=\"string\"/>\n      <attribute id=\"fullpath\" title=\"fullpath\" type=\"string\"/>\n     ...}"
 *     }
 */
 app.get(constants.ENDPOINTS.LOAD_GRAPH, function (req, res) {
@@ -59,30 +59,19 @@ app.get(constants.ENDPOINTS.LOAD_GRAPH, function (req, res) {
     res.send({ graph: GraphBuilder.loadGraphData(graph.graph_path) });
 });
 /**
- * @api {get} /user/:id Request User information
- * @apiName GetUser
- * @apiGroup User
- *
- * @apiParam {Number} id Users unique ID.
- *
- * @apiSuccess {String} firstname Firstname of the User.
- * @apiSuccess {String} lastname  Lastname of the User.
- *
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *       "firstname": "John",
- *       "lastname": "Doe"
- *     }
- *
- * @apiError UserNotFound The id of the User was not found.
- *
- * @apiErrorExample Error-Response:
- *     HTTP/1.1 404 Not Found
- *     {
- *       "error": "UserNotFound"
- *     }
- */
+* @api {get} /create-uncurated-note/
+* @apiName CreateUncuratedNote
+* @apiGroup Note
+*
+* @apiDescription load graph string from browser for GraphBuilder.loadGraph or gexf.parse
+* @apiSuccess {String} graph string in gexf format
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       "graph": "{"graph":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<gexf version=\"1.2\" xmlns=\"http://www.gexf.net/1.2draft\" xmlns:viz=\"http:///www.gexf.net/1.1draft/viz\">\n  <meta/>\n  <graph defaultedgetype=\"directed\">\n    <attributes class=\"node\">\n      <attribute id=\"mdfile\" title=\"mdfile\" type=\"string\"/>\n      <attribute id=\"title\" title=\"title\" type=\"string\"/>\n      <attribute id=\"fullpath\" title=\"fullpath\" type=\"string\"/>\n     ...}"
+*     }
+*/
 app.get(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, function (req, res) {
     var graph = getGraphFromRequest(req);
     console.log(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, req.query);

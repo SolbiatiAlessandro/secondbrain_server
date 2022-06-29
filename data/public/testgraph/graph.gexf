@@ -212,6 +212,17 @@
         <viz:size value="10"/>
         <viz:position x="-3.2130619232799607" y="-5.252050144340554"/>
       </node>
+      <node id="e86860c0-f7a2-11ec-834a-930074e48e7c" label="e86860c0-f7a2-11ec-834a-930074e48e7c">
+        <attvalues>
+          <attvalue for="mdfile" value="./data/public/testgraph/markdown/e86860c0-f7a2-11ec-834a-930074e48e7c.md"/>
+          <attvalue for="title" value="e86860c0-f7a2-11ec-834a-930074e48e7c"/>
+          <attvalue for="fullpath" value="/Users/lessandro/Hacking/LOVECRM/v1_typescript/data/public/testgraph/markdown/e86860c0-f7a2-11ec-834a-930074e48e7c.md"/>
+          <attvalue for="nodetype" value="UNCURATED_NOTE"/>
+          <attvalue for="events" value="[[&quot;CREATE&quot;,&quot;2022-06-29T11:59:19.756Z&quot;]]"/>
+        </attvalues>
+        <viz:size value="10"/>
+        <viz:position x="4.187588428629931" y="8.642318013239041"/>
+      </node>
     </nodes>
     <edges>
       <edge id="geid_127_0" source="7fda1f50-c9ce-11ec-a516-2f07dc84c67d" target="77e83980-c9c9-11ec-a797-21cf95933d2f"/>

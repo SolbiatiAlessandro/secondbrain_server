@@ -2,6 +2,17 @@
 
 Repurposed old [v2 repo](https://github.com/SolbiatiAlessandro/LoveCRM_v1typescript) to be server for new v3
 
+## Docs
+Generate 
+```
+npx apidoc -i src -o apidoc
+```
+
+Consume
+```
+open -a "Google Chrome" apidoc/index.html
+```
+
 ----
 
 # Old Repo | https://github.com/SolbiatiAlessandro/LoveCRM_v1typescript
