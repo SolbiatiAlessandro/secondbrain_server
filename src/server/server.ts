@@ -42,8 +42,15 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
+/**
+* @api {get} / Graph Debug
+* @apiName GraphDebug
+* @apiGroup Graph
+*
+* @apiSuccess {String} order of the graph
+*/
 app.get( "/", ( req, res ) => {
-	const graph = getGraphFromRequest( req )[0];
+	const graph = getGraphFromRequest( req );
 	res.send(`graph order is ${ graph.order }`);
 } );
 
