@@ -1,6 +1,6 @@
-# SecondBrain v3
+# SecondBrain (v2) Server
 
-Repurposed old [v2 repo](https://github.com/SolbiatiAlessandro/LoveCRM_v1typescript) to be server for new v3
+Repurposed old [v1 repo](https://github.com/SolbiatiAlessandro/LoveCRM_v1typescript) to be server for new v2
 
 ## Docs
 Generate 
