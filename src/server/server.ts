@@ -48,11 +48,24 @@ app.get( "/", ( req, res ) => {
 } );
 
 
-// load graph string from browser for GraphBuilder.loadGraph
+/**
+* @api {get} /load-graph/ Load Graph gexf string
+* @apiName LoadGraph
+* @apiGroup Graph
+*
+* @apiDescription load graph string from browser for GraphBuilder.loadGraph or gexf.parse
+* @apiSuccess {String} graph string in gexf format
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       "graph": "{"graph":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<gexf version=\"1.2\" xmlns=\"http://www.gexf.net/1.2draft\" xmlns:viz=\"http:///www.gexf.net/1.1draft/viz\">\n  <meta/>\n  <graph defaultedgetype=\"directed\">\n    <attributes class=\"node\">\n      <attribute id=\"mdfile\" title=\"mdfile\" type=\"string\"/>\n      <attribute id=\"title\" title=\"title\" type=\"string\"/>\n      <attribute id=\"fullpath\" title=\"fullpath\" type=\"string\"/>\n     ...}"
+*     }
+*/
 app.get(constants.ENDPOINTS.LOAD_GRAPH, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.LOAD_GRAPH, req.query);
-	res.send(GraphBuilder.loadGraphData(graph.graph_path));
+	res.send({ graph: GraphBuilder.loadGraphData(graph.graph_path)});
 });
 
 app.get(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, ( req, res ) => {

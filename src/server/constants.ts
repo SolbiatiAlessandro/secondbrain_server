@@ -4,6 +4,8 @@ export abstract class DATA {
 	public static readonly GRAPH_PATH = "./data/";
 }
 
+
+// if you change the APIs endpoint literals make sure to change doc string in server.ts 
 export abstract class ENDPOINTS {
 	public static readonly LOAD_GRAPH: string = "/load-graph"
 	public static readonly CREATE_UNCURATED_NOTE: string = "/create-uncurated-note"

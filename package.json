@@ -1,6 +1,7 @@
 {
 	"type": "module",
 	"dependencies": {
+		"apidoc": "^0.51.1",
 		"common": "^0.2.5",
 		"cors": "^2.8.5",
 		"express": "^4.17.3",

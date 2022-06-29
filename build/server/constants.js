@@ -7,6 +7,7 @@ var DATA = /** @class */ (function () {
     return DATA;
 }());
 export { DATA };
+// if you change the APIs endpoint literals make sure to change doc string in server.ts 
 var ENDPOINTS = /** @class */ (function () {
     function ENDPOINTS() {
     }

@@ -39,12 +39,50 @@ app.get("/", function (req, res) {
     var graph = getGraphFromRequest(req)[0];
     res.send("graph order is ".concat(graph.order));
 });
-// load graph string from browser for GraphBuilder.loadGraph
+/**
+* @api {get} /load-graph/ Load Graph gexf string
+* @apiName LoadGraph
+* @apiGroup Graph
+*
+* @apiDescription load graph string from browser for GraphBuilder.loadGraph or gexf.parse
+* @apiSuccess {String} graph string in gexf format
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       "graph": "John",
+*     }
+*/
 app.get(constants.ENDPOINTS.LOAD_GRAPH, function (req, res) {
     var graph = getGraphFromRequest(req);
     console.log(constants.ENDPOINTS.LOAD_GRAPH, req.query);
-    res.send(GraphBuilder.loadGraphData(graph.graph_path));
+    res.send({ graph: GraphBuilder.loadGraphData(graph.graph_path) });
 });
+/**
+ * @api {get} /user/:id Request User information
+ * @apiName GetUser
+ * @apiGroup User
+ *
+ * @apiParam {Number} id Users unique ID.
+ *
+ * @apiSuccess {String} firstname Firstname of the User.
+ * @apiSuccess {String} lastname  Lastname of the User.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "firstname": "John",
+ *       "lastname": "Doe"
+ *     }
+ *
+ * @apiError UserNotFound The id of the User was not found.
+ *
+ * @apiErrorExample Error-Response:
+ *     HTTP/1.1 404 Not Found
+ *     {
+ *       "error": "UserNotFound"
+ *     }
+ */
 app.get(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, function (req, res) {
     var graph = getGraphFromRequest(req);
     console.log(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, req.query);
