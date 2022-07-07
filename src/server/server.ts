@@ -44,12 +44,35 @@ import cors from "cors";
 const app = express();
 app.use(cors());
 
+/**
+* @api {get} /load-graph/ Load Graph gexf string
+* @apiName LoadGraph
+* @apiGroup Graph
+*
+* @apiDescription load graph string from browser for GraphBuilder.loadGraph or gexf.parse
+* @apiSuccess {String} graph string in gexf format
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       "graph": "{"graph":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<gexf version=\"1.2\" xmlns=\"http://www.gexf.net/1.2draft\" xmlns:viz=\"http:///www.gexf.net/1.1draft/viz\">\n  <meta/>\n  <graph defaultedgetype=\"directed\">\n    <attributes class=\"node\">\n      <attribute id=\"mdfile\" title=\"mdfile\" type=\"string\"/>\n      <attribute id=\"title\" title=\"title\" type=\"string\"/>\n      <attribute id=\"fullpath\" title=\"fullpath\" type=\"string\"/>\n     ...}"
+*     }
+*/
 app.get( "/", ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	res.send(`graph order is ${ graph.order }`);
 } );
 
-// scriptUUID
+/**
+* @api {get} /script/ Execute Script
+* @apiName Script
+* @apiGroup Graph
+* @apiParam {String} UUID of note containing typescript script, you will have `graph` in your local context
+*
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*/
 app.get( "/script", ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	const file = graph.getNodeAttribute(req.query.scriptUUID, 'fullpath');
@@ -58,13 +81,37 @@ app.get( "/script", ( req, res ) => {
 } );
 
 
-// load graph string from browser for GraphBuilder.loadGraph
+/**
+* @api {get} /load-graph/ Load Graph gexf string
+* @apiName LoadGraph
+* @apiGroup Graph
+*
+* @apiDescription load graph string from browser for GraphBuilder.loadGraph or gexf.parse
+* @apiSuccess {String} graph string in gexf format
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     {
+*       "graph": "{"graph":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<gexf version=\"1.2\" xmlns=\"http://www.gexf.net/1.2draft\" xmlns:viz=\"http:///www.gexf.net/1.1draft/viz\">\n  <meta/>\n  <graph defaultedgetype=\"directed\">\n    <attributes class=\"node\">\n      <attribute id=\"mdfile\" title=\"mdfile\" type=\"string\"/>\n      <attribute id=\"title\" title=\"title\" type=\"string\"/>\n      <attribute id=\"fullpath\" title=\"fullpath\" type=\"string\"/>\n     ...}"
+*     }
+*/
 app.get(constants.ENDPOINTS.LOAD_GRAPH, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.LOAD_GRAPH, req.query);
 	res.send(GraphBuilder.loadGraphData(graph.graph_path));
 });
 
+/**
+* @api {get} /create-uncurated-note/ Create Uncurated Note
+* @apiName CreateUncuratedNote
+* @apiGroup Note
+*
+* @apiSuccess {String} url of uncurated note
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     "./data/public/testgraph/markdown/e86860c0-f7a2-11ec-834a-930074e48e7c.md"
+*/
 app.get(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, req.query);
@@ -73,9 +120,19 @@ app.get(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, ( req, res ) => {
 	res.send(note);
 });
 
-// TODO: with internet, how to do typed requests?
-// title: string 
-// parent: string (uuid of parent note)
+/**
+* @api {get} /create-curated-note/ Create Curated Note
+* @apiName CreateCuratedNote
+* @apiGroup Note
+* @apiParam {String} title name of the new note
+* @apiParam {String} parent uuid of the parent note
+*
+* @apiSuccess {String} url of curated note
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     "./data/public/testgraph/markdown/e86860c0-f7a2-11ec-834a-930074e48e7c.md"
+*/
 app.get(constants.ENDPOINTS.CREATE_CURATED_NOTE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.CREATE_CURATED_NOTE, req.query);
@@ -84,7 +141,18 @@ app.get(constants.ENDPOINTS.CREATE_CURATED_NOTE, ( req, res ) => {
 	res.send(note);
 });
 
-// personName: string 
+/**
+* @api {get} /create-person/ Create Person
+* @apiName CreatePerson
+* @apiGroup Person
+* @apiParam {String} personName name of the person
+*
+* @apiSuccess {String} url of person note
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     "./data/public/testgraph/markdown/e86860c0-f7a2-11ec-834a-930074e48e7c.md"
+*/
 app.get(constants.ENDPOINTS.CREATE_PERSON, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.CREATE_PERSON, req.query);
@@ -93,9 +161,20 @@ app.get(constants.ENDPOINTS.CREATE_PERSON, ( req, res ) => {
 	res.send(note);
 });
 
-// title: string 
-// filePath: string 
-// parentUUID: string 
+/**
+* @api {get} /create-person/ Create Person
+* @apiName CreatePerson
+* @apiGroup Person
+* @apiParam {String} title
+* @apiParam {String} filePath, usually .pdf
+* @apiParam {String} parentUUID
+*
+* @apiSuccess {String} url of file
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*     "./data/public/testgraph/pdf/test.pdf"
+*/
 app.get(constants.ENDPOINTS.CREATE_FILE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.CREATE_FILE, req.query);
@@ -104,8 +183,17 @@ app.get(constants.ENDPOINTS.CREATE_FILE, ( req, res ) => {
 	res.send(note);
 });
 
-// childrenNote: uuid
-// parentNote: uuid
+/**
+* @api {get} /reference-note/ Reference Curated Note
+* @apiName ReferenceNote
+* @apiGroup Note
+* @apiParam {String} childrenNote
+* @apiParam {String} parentNote
+* @apiDescription add an edge between two notes
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*/
 app.get(constants.ENDPOINTS.REFERENCE_CURATED_NOTE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.REFERENCE_CURATED_NOTE, req.query);
@@ -118,7 +206,16 @@ app.get(constants.ENDPOINTS.REFERENCE_CURATED_NOTE, ( req, res ) => {
 	res.sendStatus(200);
 });
 
-// noteUUID: uuid
+/**
+* @api {get} /edit-note/ Edit Note
+* @apiName Edit Note
+* @apiGroup Note
+* @apiParam {String} noteUUID
+* @apiDescription send a signal that the note is being edited mostly for time tracking
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*/
 app.get(constants.ENDPOINTS.EDIT_NOTE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.EDIT_NOTE, req.query);
