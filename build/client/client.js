@@ -54,7 +54,7 @@ function onNodeClick(_a) {
         // 3) Background 
         var port = getServerPortValue();
         // TODO make backgroud dynamiac based on which node you click
-        document.getElementById("sigma-container").style["background-image"] = port == "8080" ? "url(/lovegraph_default.jpeg)" : "url(/fbgraph_default.jpeg)";
+        // document.getElementById("sigma-container").style["background-image"] = port == "8082" ? "url(/lovegraph_default.jpeg)" : "url(/fbgraph_default.jpeg)";
     });
 }
 function getServerPortValue() {
@@ -68,10 +68,7 @@ function loadGraph(callback) {
     jQuery.ajax({
         'url': "http://localhost:".concat(port, "/load-graph"),
         'success': function (graphData) {
-            // https://solbiatialessandro.github.io/secondbrain_server/#api-Graph-LoadGraph
-            console.log(graphData);
-            console.log(graphData.graph);
-            var graph = gexf.parse(GraphologyGraph, graphData.graph);
+            var graph = gexf.parse(GraphologyGraph, graphData);
             callback(graph);
         }
     });
@@ -96,6 +93,9 @@ function renderGraph(graph) {
         }
         if (data.nodetype == "PERSON") {
             res.color = "pink";
+        }
+        if (data.nodetype == "FILE") {
+            res.color = "black";
         }
         return res;
     });

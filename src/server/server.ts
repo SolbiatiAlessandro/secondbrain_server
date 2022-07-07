@@ -45,18 +45,11 @@ const app = express();
 app.use(cors());
 
 /**
-* @api {get} /load-graph/ Load Graph gexf string
-* @apiName LoadGraph
+* @api {get} / Graph Debug
+* @apiName GraphDebug
 * @apiGroup Graph
 *
-* @apiDescription load graph string from browser for GraphBuilder.loadGraph or gexf.parse
-* @apiSuccess {String} graph string in gexf format
-*
-* @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*     {
-*       "graph": "{"graph":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<gexf version=\"1.2\" xmlns=\"http://www.gexf.net/1.2draft\" xmlns:viz=\"http:///www.gexf.net/1.1draft/viz\">\n  <meta/>\n  <graph defaultedgetype=\"directed\">\n    <attributes class=\"node\">\n      <attribute id=\"mdfile\" title=\"mdfile\" type=\"string\"/>\n      <attribute id=\"title\" title=\"title\" type=\"string\"/>\n      <attribute id=\"fullpath\" title=\"fullpath\" type=\"string\"/>\n     ...}"
-*     }
+* @apiSuccess {String} order of the graph
 */
 app.get( "/", ( req, res ) => {
 	const graph = getGraphFromRequest( req );
@@ -82,7 +75,7 @@ app.get( "/script", ( req, res ) => {
 
 
 /**
-* @api {get} /load-graph/ Load Graph gexf string
+* @api {get} /load-graph/ Load Graph 
 * @apiName LoadGraph
 * @apiGroup Graph
 *
@@ -162,9 +155,9 @@ app.get(constants.ENDPOINTS.CREATE_PERSON, ( req, res ) => {
 });
 
 /**
-* @api {get} /create-person/ Create Person
-* @apiName CreatePerson
-* @apiGroup Person
+* @api {get} /create-file/ Create File
+* @apiName Createfile
+* @apiGroup File
 * @apiParam {String} title
 * @apiParam {String} filePath, usually .pdf
 * @apiParam {String} parentUUID
@@ -184,7 +177,7 @@ app.get(constants.ENDPOINTS.CREATE_FILE, ( req, res ) => {
 });
 
 /**
-* @api {get} /reference-note/ Reference Curated Note
+* @api {get} /reference-note/ Reference Note
 * @apiName ReferenceNote
 * @apiGroup Note
 * @apiParam {String} childrenNote

@@ -9,7 +9,7 @@ There is also a dummy v1 client in this repo but is deprecated as of v2
 ## Docs
 Generate 
 ```
-npx apidoc -i src -o apidoc
+npx apidoc -i src -o docs -v
 ```
 
 Consume
@@ -19,7 +19,7 @@ Read the APIs docs at <https://solbiatialessandro.github.io/secondbrain_server/>
 or 
 
 ```
-open -a "Google Chrome" apidoc/index.html
+open -a "Google Chrome" docs/index.html
 ```
 
 ----
