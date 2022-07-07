@@ -2,6 +2,9 @@ import {Graph, GraphBuilder} from './graph.js';
 import {NoteBuilder} from './note.js';
 import * as constants from './constants.js';
 import { execSync	} from 'child_process';
+import pdfmerge from 'pdf-merge';
+const PDFMerge = { pdfmerge };
+import * as fs from 'fs';
 
 //const graph: Graph = GraphBuilder.loadGraph();
 const graphs: Record<string, Graph> = GraphBuilder.loadGraphs();
@@ -37,55 +40,31 @@ function getGraphFromRequest( req ): Graph {
 
 
 import express from "express";
-import Request from "express";
 import cors from "cors";
 const app = express();
 app.use(cors());
 
-/**
-* @api {get} / Graph Debug
-* @apiName GraphDebug
-* @apiGroup Graph
-*
-* @apiSuccess {String} order of the graph
-*/
 app.get( "/", ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	res.send(`graph order is ${ graph.order }`);
 } );
 
+// scriptUUID
+app.get( "/script", ( req, res ) => {
+	const graph = getGraphFromRequest( req );
+	const file = graph.getNodeAttribute(req.query.scriptUUID, 'fullpath');
+	eval(fs.readFileSync(file,  {encoding:'utf8', flag:'r'}));
+	res.sendStatus(200);
+} );
 
-/**
-* @api {get} /load-graph/ Load Graph gexf string
-* @apiName LoadGraph
-* @apiGroup Graph
-*
-* @apiDescription load graph string from browser for GraphBuilder.loadGraph or gexf.parse
-* @apiSuccess {String} graph string in gexf format
-*
-* @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*     {
-*       "graph": "{"graph":"<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<gexf version=\"1.2\" xmlns=\"http://www.gexf.net/1.2draft\" xmlns:viz=\"http:///www.gexf.net/1.1draft/viz\">\n  <meta/>\n  <graph defaultedgetype=\"directed\">\n    <attributes class=\"node\">\n      <attribute id=\"mdfile\" title=\"mdfile\" type=\"string\"/>\n      <attribute id=\"title\" title=\"title\" type=\"string\"/>\n      <attribute id=\"fullpath\" title=\"fullpath\" type=\"string\"/>\n     ...}"
-*     }
-*/
+
+// load graph string from browser for GraphBuilder.loadGraph
 app.get(constants.ENDPOINTS.LOAD_GRAPH, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.LOAD_GRAPH, req.query);
-	res.send({ graph: GraphBuilder.loadGraphData(graph.graph_path)});
+	res.send(GraphBuilder.loadGraphData(graph.graph_path));
 });
 
-/**
-* @api {get} /create-uncurated-note/ Create Uncurated Note
-* @apiName CreateUncuratedNote
-* @apiGroup Note
-*
-* @apiSuccess {String} url of uncurated note
-*
-* @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*     "./data/public/testgraph/markdown/e86860c0-f7a2-11ec-834a-930074e48e7c.md"
-*/
 app.get(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, req.query);
@@ -94,20 +73,10 @@ app.get(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, ( req, res ) => {
 	res.send(note);
 });
 
-/**
-* @api {get} /create-curated-note/ Create Curated Note
-* @apiName CreateCuratedNote
-* @apiGroup Note
-* @apiParam {String} title name of the new note
-* @apiParam {String} parent uuid of the parent note
-*
-* @apiSuccess {String} url of curated note
-*
-* @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*     "./data/public/testgraph/markdown/e86860c0-f7a2-11ec-834a-930074e48e7c.md"
-*/
-app.get(constants.ENDPOINTS.CREATE_CURATED_NOTE, ( req: Request<{title: string, parent: string }>, res ) => {
+// TODO: with internet, how to do typed requests?
+// title: string 
+// parent: string (uuid of parent note)
+app.get(constants.ENDPOINTS.CREATE_CURATED_NOTE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.CREATE_CURATED_NOTE, req.query);
 	const note = NoteBuilder.createCuratedNote(graph, req.query.title, req.query.parent);
@@ -115,18 +84,7 @@ app.get(constants.ENDPOINTS.CREATE_CURATED_NOTE, ( req: Request<{title: string, 
 	res.send(note);
 });
 
-/**
-* @api {get} /create-person/ Create Person
-* @apiName CreatePerson
-* @apiGroup Person
-* @apiParam {String} personName name of the person
-*
-* @apiSuccess {String} url of person note
-*
-* @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*     "./data/public/testgraph/markdown/e86860c0-f7a2-11ec-834a-930074e48e7c.md"
-*/
+// personName: string 
 app.get(constants.ENDPOINTS.CREATE_PERSON, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.CREATE_PERSON, req.query);
@@ -135,39 +93,32 @@ app.get(constants.ENDPOINTS.CREATE_PERSON, ( req, res ) => {
 	res.send(note);
 });
 
-/**
-* @api {get} /reference-curated-note/ Reference Curated Note
-* @apiName ReferenceCuratedNote
-* @apiGroup Note
-* @apiParam {String} uncuratedNoteUUID
-* @apiParam {String} curatedNoteUUID
-* @apiDescription uncurated note mentions a curated note, this is used to create a link between notes for querying like content or time tracking
-*
-* @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*/
+// title: string 
+// filePath: string 
+// parentUUID: string 
+app.get(constants.ENDPOINTS.CREATE_FILE, ( req, res ) => {
+	const graph = getGraphFromRequest( req );
+	console.log(constants.ENDPOINTS.CREATE_FILE, req.query);
+	const note = NoteBuilder.createFile(graph, req.query.title, req.query.filePath, req.query.parentUUID);
+	console.log("200 OK", note);
+	res.send(note);
+});
+
+// childrenNote: uuid
+// parentNote: uuid
 app.get(constants.ENDPOINTS.REFERENCE_CURATED_NOTE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.REFERENCE_CURATED_NOTE, req.query);
   NoteBuilder.referenceCuratedNote(
 		graph, 
-		req.query.uncuratedNoteUUID, 
-		req.query.curatedNoteUUID
+		req.query.childrenNote, 
+		req.query.parentNote
 	);
 	console.log("200 OK");
 	res.sendStatus(200);
 });
 
-/**
-* @api {get} /edit-note/ Edit Note
-* @apiName Edit Note
-* @apiGroup Note
-* @apiParam {String} noteUUID
-* @apiDescription send a signal that the note is being edited mostly for time tracking
-*
-* @apiSuccessExample Success-Response:
-*     HTTP/1.1 200 OK
-*/
+// noteUUID: uuid
 app.get(constants.ENDPOINTS.EDIT_NOTE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.EDIT_NOTE, req.query);

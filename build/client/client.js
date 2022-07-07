@@ -68,7 +68,10 @@ function loadGraph(callback) {
     jQuery.ajax({
         'url': "http://localhost:".concat(port, "/load-graph"),
         'success': function (graphData) {
-            var graph = gexf.parse(GraphologyGraph, graphData);
+            // https://solbiatialessandro.github.io/secondbrain_server/#api-Graph-LoadGraph
+            console.log(graphData);
+            console.log(graphData.graph);
+            var graph = gexf.parse(GraphologyGraph, graphData.graph);
             callback(graph);
         }
     });

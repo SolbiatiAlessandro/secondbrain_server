@@ -11,12 +11,13 @@ abstract class Note extends GraphNode {
 		return {
 				mdfile: this.mdfile,
 				// TODO: figure out how to call pwd from javascript
-				fullpath: "/Users/lessandro/Hacking/LOVECRM/v2_phaser/server" + this.mdfile.substring(1),
+				fullpath: "/Users/lessandro/Hacking/LOVECRM/v1_typescript" + this.mdfile.substring(1),
 		}
 	}
 
 	constructor(public readonly PATH: string){
 		super();
+		// TODO: mdfile might not always be a file (see File class)
 		this.mdfile = this.PATH + "markdown/" + this.uuid + ".md";
 	}
 }
@@ -49,6 +50,16 @@ export class Person extends Note {
 	}
 }
 
+export class File extends Note {
+	public nodeType: string = constants.NODE_TYPES.FILE;
+	constructor(PATH: string, public title: string, public filePath: string){
+		super(PATH);
+		this.mdfile = filePath;
+		this.title = title;
+	}
+
+}
+
 export abstract class NoteBuilder {
 	public static readonly NOTE_FOOTER = "\n".repeat(100);
 	static createUncuratedNote(graph: Graph){
@@ -59,8 +70,8 @@ export abstract class NoteBuilder {
 		return note.mdfile;
 	}
 
-	static referenceCuratedNote(graph: Graph, uncuratedNoteUUID: string, curatedNoteUUID: string){
-		graph.addEdge(curatedNoteUUID, uncuratedNoteUUID);
+	static referenceCuratedNote(graph: Graph, childrenNote: string, parentNote: string){
+		graph.addEdge(parentNote, childrenNote);
 		// TODO: how to overwrite in typescript? overwrite addEdge and 
 		// save graph directly inside there instead of needing to calling 
 		// it outside
@@ -92,6 +103,19 @@ export abstract class NoteBuilder {
 		graph.add(person);
 		GraphBuilder.save(graph);
 		return person.mdfile;
+	}
+
+	static createFile(
+		graph: Graph,
+		title: string,
+		filePath: string,
+		parentUUID: string,
+	){
+		const file: File = new File(graph.graph_path, title, filePath);
+		graph.add(file);
+		graph.addEdge(parentUUID, file.uuid);
+		GraphBuilder.save(graph);
+		return file.uuid;
 	}
 
 	static noteEvent(graph: Graph, noteUUID: string, eventType: string){

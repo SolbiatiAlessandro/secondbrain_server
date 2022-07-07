@@ -28,7 +28,7 @@ var Note = /** @class */ (function (_super) {
         return {
             mdfile: this.mdfile,
             // TODO: figure out how to call pwd from javascript
-            fullpath: "/Users/lessandro/Hacking/LOVECRM/v1_typescript" + this.mdfile.substring(1),
+            fullpath: "/Users/lessandro/Hacking/LOVECRM/v2_phaser/server" + this.mdfile.substring(1),
         };
     };
     return Note;
