@@ -16,6 +16,7 @@ export var ENDPOINTS;
     ENDPOINTS["EDIT_NOTE"] = "/edit-note";
     ENDPOINTS["CREATE_PERSON"] = "/create-person";
     ENDPOINTS["CREATE_FILE"] = "/create-file";
+    ENDPOINTS["UPDATE_NODE_ATTRIBUTE"] = "/update-node-attributes";
 })(ENDPOINTS || (ENDPOINTS = {}));
 export var NODE_TYPES;
 (function (NODE_TYPES) {

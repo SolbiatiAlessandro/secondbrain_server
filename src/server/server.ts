@@ -80,7 +80,7 @@ app.get( "/script", ( req, res ) => {
 * @apiGroup Graph
 *
 * @apiDescription load graph string from browser for GraphBuilder.loadGraph or gexf.parse
-* @apiSuccess {String} graph string in gexf format
+* @apiSuccess {JSON} {graph: graph string in gexf format}
 *
 * @apiSuccessExample Success-Response:
 *     HTTP/1.1 200 OK
@@ -91,8 +91,9 @@ app.get( "/script", ( req, res ) => {
 app.get(constants.ENDPOINTS.LOAD_GRAPH, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.LOAD_GRAPH, req.query);
-	res.send(GraphBuilder.loadGraphData(graph.graph_path));
+	res.send({graph: GraphBuilder.loadGraphData(graph.graph_path)});
 });
+
 
 /**
 * @api {get} /create-uncurated-note/ Create Uncurated Note
@@ -111,6 +112,26 @@ app.get(constants.ENDPOINTS.CREATE_UNCURATED_NOTE, ( req, res ) => {
 	const note = NoteBuilder.createUncuratedNote(graph);
 	console.log("200 OK", note);
 	res.send(note);
+});
+
+/**
+* @api {get} /update-node-attributes/ Update Node Attributes
+* @apiName UpdateNodeAttributes
+* @apiGroup Graph
+* @apiParam {String} node this is node key (a uuid)
+* @apiParam {String} x
+* @apiParam {String} y
+*
+* @apiSuccessExample Success-Response:
+*     HTTP/1.1 200 OK
+*/
+app.get(constants.ENDPOINTS.UPDATE_NODE_ATTRIBUTE, ( req, res ) => {
+	const graph = getGraphFromRequest( req );
+	console.log(constants.ENDPOINTS.UPDATE_NODE_ATTRIBUTE, req.query);
+	graph.setNodeAttribute(req.query.node, 'x', req.query.x);
+	graph.setNodeAttribute(req.query.node, 'y', req.query.y);
+	GraphBuilder.save(graph);
+	res.sendStatus(200);
 });
 
 /**

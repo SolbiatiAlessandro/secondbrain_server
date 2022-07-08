@@ -12,6 +12,7 @@ export enum ENDPOINTS {
 	EDIT_NOTE = "/edit-note",
 	CREATE_PERSON = "/create-person",
 	CREATE_FILE = "/create-file",
+	UPDATE_NODE_ATTRIBUTE = "/update-node-attributes",
 }
 
 export enum NODE_TYPES {

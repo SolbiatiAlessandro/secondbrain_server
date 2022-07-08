@@ -65,7 +65,7 @@ function loadGraph(callback){
 	jQuery.ajax( {
 		'url': `http://localhost:${port}/load-graph`,
 		'success': function(graphData){
-				const graph =  gexf.parse(GraphologyGraph, graphData);
+				const graph =  gexf.parse(GraphologyGraph, graphData.graph);
 				callback(graph);
 		}
 	});
