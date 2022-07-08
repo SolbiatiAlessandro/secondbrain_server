@@ -57,14 +57,32 @@ var Graph = /** @class */ (function (_super) {
         var _this = _super !== null && _super.apply(this, arguments) || this;
         _this.PUBLIC = true;
         return _this;
+        /* // graphology API EXAMPLE
+        addExampleNode(){
+            this.addNode("John3", { x: 0, y: 10, size: 5, label: "John2", color: "blue" });
+            this.addEdge('John', 'John3');
+            GraphBuilder.save(this);
+        }
+        */
     }
-    /* // graphology API EXAMPLE
-    addExampleNode(){
-        this.addNode("John3", { x: 0, y: 10, size: 5, label: "John2", color: "blue" });
-        this.addEdge('John', 'John3');
-        GraphBuilder.save(this);
-    }
-    */
+    Graph.prototype.postLoad = function () {
+        var _this = this;
+        this.forEachNode(function (node, attrs) {
+            try {
+                var mdfile = fs.readFileSync(attrs.fullpath).toString();
+                var banana = mdfile.includes('🍌');
+                _this.setNodeAttribute(node, 'banana', banana);
+            }
+            catch (error) {
+                if (error.code == "ENOENT") {
+                    console.log("couldn't find file", attrs.fullpath);
+                }
+                else {
+                    throw error;
+                }
+            }
+        });
+    };
     Graph.prototype.add = function (node) {
         this.addNode(node.uuid, utils.mergeDictionaries(node.visualisationValues(), node.saveValues()));
     };
@@ -92,15 +110,11 @@ var GraphBuilder = /** @class */ (function () {
         return graphs;
     };
     GraphBuilder.loadGraph = function (graph_path) {
-        try {
-            // @ts-ignore
-            var graph = gexf.parse(Graph, GraphBuilder.loadGraphData(graph_path));
-            graph.graph_path = graph_path;
-            return graph;
-        }
-        catch (_a) {
-            return new Graph();
-        }
+        // @ts-ignore
+        var graph = gexf.parse(Graph, GraphBuilder.loadGraphData(graph_path));
+        graph.graph_path = graph_path;
+        graph.postLoad();
+        return graph;
     };
     GraphBuilder.save = function (graph) {
         fs.writeFileSync(GraphBuilder._buildGraphPath(graph.graph_path), gexf.write(graph));

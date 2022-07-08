@@ -5,6 +5,7 @@ import { execSync } from 'child_process';
 import pdfmerge from 'pdf-merge';
 var PDFMerge = { pdfmerge: pdfmerge };
 import * as fs from 'fs';
+import * as gexf from 'graphology-gexf';
 //const graph: Graph = GraphBuilder.loadGraph();
 var graphs = GraphBuilder.loadGraphs();
 // server setup
@@ -82,7 +83,7 @@ app.get("/script", function (req, res) {
 app.get(constants.ENDPOINTS.LOAD_GRAPH, function (req, res) {
     var graph = getGraphFromRequest(req);
     console.log(constants.ENDPOINTS.LOAD_GRAPH, req.query);
-    res.send({ graph: GraphBuilder.loadGraphData(graph.graph_path) });
+    res.send({ graph: gexf.write(graph) });
 });
 /**
 * @api {get} /create-uncurated-note/ Create Uncurated Note

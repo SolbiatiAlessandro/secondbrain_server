@@ -51,13 +51,21 @@ export class Graph extends GraphologyGraph {
 	public PUBLIC: boolean = true;
 	public graph_path: string;
 
-	/* // graphology API EXAMPLE
-	addExampleNode(){
-		this.addNode("John3", { x: 0, y: 10, size: 5, label: "John2", color: "blue" });
-		this.addEdge('John', 'John3');
-		GraphBuilder.save(this);
+	postLoad(){
+		this.forEachNode((node, attrs) => {
+			try {
+			const mdfile = fs.readFileSync(attrs.fullpath).toString();
+			const banana = mdfile.includes('🍌');
+			this.setNodeAttribute(node, 'banana', banana);
+		} catch (error) {
+			if (error.code == "ENOENT"){
+				console.log("couldn't find file", attrs.fullpath);
+			} else {
+				throw error;
+			}
+		}
+		});
 	}
-	*/
 
 	add(node: GraphNode){
 		this.addNode(
@@ -66,6 +74,16 @@ export class Graph extends GraphologyGraph {
 				node.visualisationValues(), 
 				node.saveValues()));
 	}
+
+	/* // graphology API EXAMPLE
+	addExampleNode(){
+		this.addNode("John3", { x: 0, y: 10, size: 5, label: "John2", color: "blue" });
+		this.addEdge('John', 'John3');
+		GraphBuilder.save(this);
+	}
+	*/
+
+
 }
 
 export abstract class GraphBuilder {
@@ -100,14 +118,11 @@ export abstract class GraphBuilder {
 	}
 
 	static loadGraph(graph_path: string): Graph{
-		try{
-			// @ts-ignore
-			const graph: Graph = gexf.parse(Graph, GraphBuilder.loadGraphData(graph_path));
-			graph.graph_path = graph_path;
-			return graph;
-		}	catch {
-			return new Graph();
-		}
+		// @ts-ignore
+		const graph: Graph = gexf.parse(Graph, GraphBuilder.loadGraphData(graph_path));
+		graph.graph_path = graph_path;
+		graph.postLoad();
+		return graph;
 	}
 
 	static save(graph: Graph){

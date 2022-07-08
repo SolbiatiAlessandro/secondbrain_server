@@ -5,6 +5,7 @@ import { execSync	} from 'child_process';
 import pdfmerge from 'pdf-merge';
 const PDFMerge = { pdfmerge };
 import * as fs from 'fs';
+import * as gexf from 'graphology-gexf';
 
 //const graph: Graph = GraphBuilder.loadGraph();
 const graphs: Record<string, Graph> = GraphBuilder.loadGraphs();
@@ -91,7 +92,7 @@ app.get( "/script", ( req, res ) => {
 app.get(constants.ENDPOINTS.LOAD_GRAPH, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.LOAD_GRAPH, req.query);
-	res.send({graph: GraphBuilder.loadGraphData(graph.graph_path)});
+	res.send({graph: gexf.write(graph)});
 });
 
 
