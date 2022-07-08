@@ -8,7 +8,7 @@ import * as fs from 'fs';
 import * as gexf from 'graphology-gexf';
 
 //const graph: Graph = GraphBuilder.loadGraph();
-const graphs: Record<string, Graph> = GraphBuilder.loadGraphs();
+var graphs: Record<string, Graph> = GraphBuilder.loadGraphs();
 
 // server setup
 var port = 8080;
@@ -90,6 +90,7 @@ app.get( "/script", ( req, res ) => {
 *     }
 */
 app.get(constants.ENDPOINTS.LOAD_GRAPH, ( req, res ) => {
+	graphs = GraphBuilder.loadGraphs();
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.LOAD_GRAPH, req.query);
 	res.send({graph: gexf.write(graph)});

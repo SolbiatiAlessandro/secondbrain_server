@@ -81,6 +81,7 @@ app.get("/script", function (req, res) {
 *     }
 */
 app.get(constants.ENDPOINTS.LOAD_GRAPH, function (req, res) {
+    graphs = GraphBuilder.loadGraphs();
     var graph = getGraphFromRequest(req);
     console.log(constants.ENDPOINTS.LOAD_GRAPH, req.query);
     res.send({ graph: gexf.write(graph) });
