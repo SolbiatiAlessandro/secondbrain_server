@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import * as constants from "./constants.js";
 import * as utils from "./utils.js";
 import {Event} from "./event.js";
+import { EmojisUtils } from "./utils.js";
 
 export abstract class GraphNode {
 	// TODO: with internet figure out how to define new types
@@ -54,8 +55,9 @@ export class Graph extends GraphologyGraph {
 	postLoad(){
 		this.forEachNode((node, attrs) => {
 			try {
-			const mdfile = fs.readFileSync(attrs.fullpath).toString();
-			this.setNodeAttribute(node, 'banana', banana);
+			const mdfile_content = fs.readFileSync(attrs.fullpath).toString();
+			const emojistring = EmojisUtils.parse(mdfile_content);
+			this.setNodeAttribute(node, 'emojistring', emojistring);
 		} catch (error) {
 			if (error.code == "ENOENT"){
 				console.log("couldn't find file", attrs.fullpath);

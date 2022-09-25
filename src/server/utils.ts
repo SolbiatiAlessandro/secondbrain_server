@@ -1,4 +1,4 @@
-import { EMOJIS } from "./constants";
+import { EMOJIS } from "./constants.js";
 //
 // TODO: when have internet check how to do this
 export function mergeDictionaries(dict1, dict2){
@@ -9,7 +9,16 @@ export function mergeDictionaries(dict1, dict2){
 }
 
 function uglyStringCount(str: string, match: string): number {
-	return Object.entries(str).map((val) => (val[1])).filter((letter) => (letter == match)).length
+	// @ts-ignore
+	const iterator = str.matchAll(match);
+	let done = iterator.next().done;;
+	let count = 0;
+	while (!done) {
+		done = iterator.next().done;
+		count += 1;
+	}
+	console.log(str, match, count);
+	return count;
 }
 
 export abstract class EmojisUtils {
