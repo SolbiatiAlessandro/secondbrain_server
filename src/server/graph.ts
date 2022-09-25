@@ -55,7 +55,6 @@ export class Graph extends GraphologyGraph {
 		this.forEachNode((node, attrs) => {
 			try {
 			const mdfile = fs.readFileSync(attrs.fullpath).toString();
-			const banana = mdfile.includes('🍌');
 			this.setNodeAttribute(node, 'banana', banana);
 		} catch (error) {
 			if (error.code == "ENOENT"){

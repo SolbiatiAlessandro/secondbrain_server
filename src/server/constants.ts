@@ -31,3 +31,10 @@ export abstract class EVENT_TYPE {
 	public static readonly CLOSE: string = "CLOSE";
 }
 
+
+export enum EMOJIS {
+	BANANA = "🍌",
+	IDEA = "🪴",
+	WIP = "🛠",
+	REFERENCE = "📚"
+}
