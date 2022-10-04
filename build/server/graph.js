@@ -20,6 +20,7 @@ import * as fs from 'fs';
 import * as constants from "./constants.js";
 import * as utils from "./utils.js";
 import { Event } from "./event.js";
+import { EmojisUtils } from "./utils.js";
 var GraphNode = /** @class */ (function () {
     function GraphNode() {
         this.title = "Untitled";
@@ -69,9 +70,9 @@ var Graph = /** @class */ (function (_super) {
         var _this = this;
         this.forEachNode(function (node, attrs) {
             try {
-                var mdfile = fs.readFileSync(attrs.fullpath).toString();
-                var banana = mdfile.includes('🍌');
-                _this.setNodeAttribute(node, 'banana', banana);
+                var mdfile_content = fs.readFileSync(attrs.fullpath).toString();
+                var emojistring = EmojisUtils.parse(mdfile_content);
+                _this.setNodeAttribute(node, 'emojistring', emojistring);
             }
             catch (error) {
                 if (error.code == "ENOENT") {

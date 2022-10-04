@@ -22,7 +22,6 @@ export enum NODE_TYPES {
 	PICTURE = "PICTURE",
 	FILE = "FILE",
 }
-
 // TODO: make enum
 export abstract class EVENT_TYPE {
 	public static readonly CREATE: string = "CREATE";
@@ -32,9 +31,22 @@ export abstract class EVENT_TYPE {
 }
 
 
+/* how to add emoji
+ * Server
+ * 1. add to enum to constants.ts
+ *
+ * Client
+ * 2. add to scenes/load-scene
+ * 3. add images to assets folder
+ * 4. add to enum in gameobjects/textdisplay/textdisplay.ts
+ */
+
 export enum EMOJIS {
 	BANANA = "🍌",
+	SLEEP = "💤",
+	EGGBANANA = "🐣",
 	IDEA = "🪴",
 	WIP = "🛠",
-	REFERENCE = "📚"
+	REFERENCE = "📚",
+	STAR = "⭐️"
 }

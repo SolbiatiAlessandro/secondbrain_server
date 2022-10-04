@@ -120,6 +120,7 @@ app.get(constants.ENDPOINTS.UPDATE_NODE_ATTRIBUTE, function (req, res) {
     console.log(constants.ENDPOINTS.UPDATE_NODE_ATTRIBUTE, req.query);
     graph.setNodeAttribute(req.query.node, 'x', req.query.x);
     graph.setNodeAttribute(req.query.node, 'y', req.query.y);
+    console.log("NODE INFO: ", graph.getNodeAttributes(req.query.node));
     GraphBuilder.save(graph);
     res.sendStatus(200);
 });

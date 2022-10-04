@@ -37,3 +37,22 @@ var EVENT_TYPE = /** @class */ (function () {
     return EVENT_TYPE;
 }());
 export { EVENT_TYPE };
+/* how to add emoji
+ * Server
+ * 1. add to enum to constants.ts
+ *
+ * Client
+ * 2. add to scenes/load-scene
+ * 3. add images to assets folder
+ * 4. add to enum in gameobjects/textdisplay/textdisplay.ts
+ */
+export var EMOJIS;
+(function (EMOJIS) {
+    EMOJIS["BANANA"] = "\uD83C\uDF4C";
+    EMOJIS["SLEEP"] = "\uD83D\uDCA4";
+    EMOJIS["EGGBANANA"] = "\uD83D\uDC23";
+    EMOJIS["IDEA"] = "\uD83E\uDEB4";
+    EMOJIS["WIP"] = "\uD83D\uDEE0";
+    EMOJIS["REFERENCE"] = "\uD83D\uDCDA";
+    EMOJIS["STAR"] = "\u2B50\uFE0F";
+})(EMOJIS || (EMOJIS = {}));

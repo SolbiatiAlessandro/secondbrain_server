@@ -17,21 +17,22 @@ function uglyStringCount(str: string, match: string): number {
 		done = iterator.next().done;
 		count += 1;
 	}
-	console.log(str, match, count);
 	return count;
 }
 
 export abstract class EmojisUtils {
 	static parse(mdfile_content: string): string{
 		const lines = mdfile_content.split("\n");
-		let emojiString = "";
+		let emojiString = "|";
 		Object.entries(EMOJIS).forEach((name_emoji) => {
 			const emoji_name = name_emoji[0];
 			const emoji = name_emoji[1];
 			const lines_with_emojis = lines.filter((line) => {return line.includes(emoji)});
 			lines_with_emojis.forEach((line) => {
 				emojiString += uglyStringCount(line, emoji);
+				emojiString += ",";
 				emojiString += emoji_name;
+				emojiString += "|";
 			});
 		})
 		return emojiString;
