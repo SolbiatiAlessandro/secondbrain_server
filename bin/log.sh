@@ -1,4 +1,4 @@
-source datadog-secret.sh
+source ./bin/datadog-secret.sh
 NODEID="${1}"
 NODETITLE="${2}"
 ACTION="${3}"

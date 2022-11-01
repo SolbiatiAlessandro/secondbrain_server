@@ -6,6 +6,7 @@ import pdfmerge from 'pdf-merge';
 var PDFMerge = { pdfmerge: pdfmerge };
 import * as fs from 'fs';
 import * as gexf from 'graphology-gexf';
+import { exec } from 'child_process';
 //const graph: Graph = GraphBuilder.loadGraph();
 var graphs = GraphBuilder.loadGraphs();
 // server setup
@@ -120,7 +121,9 @@ app.get(constants.ENDPOINTS.UPDATE_NODE_ATTRIBUTE, function (req, res) {
     console.log(constants.ENDPOINTS.UPDATE_NODE_ATTRIBUTE, req.query);
     graph.setNodeAttribute(req.query.node, 'x', req.query.x);
     graph.setNodeAttribute(req.query.node, 'y', req.query.y);
-    console.log("NODE INFO: ", graph.getNodeAttributes(req.query.node));
+    var nodeAttributes = graph.getNodeAttributes(req.query.node);
+    console.log("NODE INFO: ", nodeAttributes);
+    exec("sh ./bin/log.sh ".concat(nodeAttributes.mdfile, " ").concat(nodeAttributes.title, " ").concat(constants.ENDPOINTS.UPDATE_NODE_ATTRIBUTE));
     GraphBuilder.save(graph);
     res.sendStatus(200);
 });

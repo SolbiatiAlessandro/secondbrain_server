@@ -6,6 +6,7 @@ import pdfmerge from 'pdf-merge';
 const PDFMerge = { pdfmerge };
 import * as fs from 'fs';
 import * as gexf from 'graphology-gexf';
+import { exec } from 'child_process';
 
 //const graph: Graph = GraphBuilder.loadGraph();
 var graphs: Record<string, Graph> = GraphBuilder.loadGraphs();
@@ -132,7 +133,9 @@ app.get(constants.ENDPOINTS.UPDATE_NODE_ATTRIBUTE, ( req, res ) => {
 	console.log(constants.ENDPOINTS.UPDATE_NODE_ATTRIBUTE, req.query);
 	graph.setNodeAttribute(req.query.node, 'x', req.query.x);
 	graph.setNodeAttribute(req.query.node, 'y', req.query.y);
-	console.log("NODE INFO: ", graph.getNodeAttributes(req.query.node));
+	const nodeAttributes = graph.getNodeAttributes(req.query.node);
+	console.log("NODE INFO: ", nodeAttributes);
+	exec(`sh ./bin/log.sh ${nodeAttributes.mdfile} ${nodeAttributes.title} ${constants.ENDPOINTS.UPDATE_NODE_ATTRIBUTE}`);
 	GraphBuilder.save(graph);
 	res.sendStatus(200);
 });
@@ -154,6 +157,7 @@ app.get(constants.ENDPOINTS.CREATE_CURATED_NOTE, ( req, res ) => {
 	const graph = getGraphFromRequest( req );
 	console.log(constants.ENDPOINTS.CREATE_CURATED_NOTE, req.query);
 	const note = NoteBuilder.createCuratedNote(graph, req.query.title, req.query.parent);
+	exec(`sh ./bin/log.sh ${req.query.parent} ${req.query.title} ${constants.ENDPOINTS.CREATE_CURATED_NOTE}`);
 	console.log("200 OK", note);
 	res.send(note);
 });
