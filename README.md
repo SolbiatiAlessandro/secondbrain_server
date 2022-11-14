@@ -1,5 +1,7 @@
 # SecondBrain (v2) Server
 
+how this looks like ![](https://github.com/SolbiatiAlessandro/secondbrain_server/blob/main/Screenshot%202022-11-14%20at%2011.45.56.png?raw=true)
+
 
 
 Repurposed old [v1 repo](https://github.com/SolbiatiAlessandro/LoveCRM_v1typescript) to be server for new v2
